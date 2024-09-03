@@ -9,34 +9,47 @@ func main() {
 
 	t := time.Now()
 	p4 := lfsr4()
-	fmt.Println("lsfr4(): period:", p4, "seconds:", time.Since(t).Seconds())
+	fmt.Println("lfsr4(): period:", p4, "seconds:", time.Since(t).Seconds())
 
 	t = time.Now()
 	p8 := lfsr8()
-	fmt.Println("lsfr8(): period:", p8, "seconds:", time.Since(t).Seconds())
+	fmt.Println("lfsr8(): period:", p8, "seconds:", time.Since(t).Seconds())
 
 	t = time.Now()
 	p16 := lfsr16()
-	fmt.Println("lsfr16(): period:", p16, "seconds:", time.Since(t).Seconds())
+	fmt.Println("lfsr16(): period:", p16, "seconds:", time.Since(t).Seconds())
 
 	t = time.Now()
 	p24 := lfsr24()
-	fmt.Println("lsfr24(): period:", p24, "seconds:", time.Since(t).Seconds())
+	fmt.Println("lfsr24(): period:", p24, "seconds:", time.Since(t).Seconds())
 
 	t = time.Now()
 	p32 := lfsr32()
-	fmt.Println("lsfr32(): period:", p32, "seconds:", time.Since(t).Seconds())
+	fmt.Println("lfsr32(): period:", p32, "seconds:", time.Since(t).Seconds())
+
+	t = time.Now()
+	p40 := lfsr40()
+	fmt.Println("lfsr40(): period:", p40, "seconds:", time.Since(t).Seconds())
+
+	t = time.Now()
+	p48 := lfsr48()
+	fmt.Println("lfsr48(): period:", p48, "seconds:", time.Since(t).Seconds())
+
+	t = time.Now()
+	p56 := lfsr56()
+	fmt.Println("lfsr56(): period:", p56, "seconds:", time.Since(t).Seconds())
 
 	t = time.Now()
 	p63 := lfsr63()
-	fmt.Println("lsfr63(): period:", p63, "seconds:", time.Since(t).Seconds())
+	fmt.Println("lfsr63(): period:", p63, "seconds:", time.Since(t).Seconds())
 
 	t = time.Now()
 	p64 := lfsr64()
-	fmt.Println("lsfr64(): period:", p64, "seconds:", time.Since(t).Seconds())
+	fmt.Println("lfsr64(): period:", p64, "seconds:", time.Since(t).Seconds())
 
 }
 
+// 64 bit LFSR
 func lfsr64() uint64 {
 
 	var start_state uint64
@@ -67,6 +80,7 @@ func lfsr64() uint64 {
 	return period
 }
 
+// 63 bit LFSR
 func lfsr63() uint64 {
 
 	var start_state uint64
@@ -97,6 +111,97 @@ func lfsr63() uint64 {
 	return period
 }
 
+// 56 bit LFSR
+func lfsr56() uint64 {
+	var start_state uint64
+	var lfsr uint64
+	var bit uint64
+
+	start_state = 0xACE1
+	lfsr = start_state
+
+	var period uint64 = 0
+
+	/* taps: 32,22,2,1 + 11*/
+	for {
+		//	fmt.Print(lfsr & 1)
+
+		//           56,           55,           35,            34      + 1
+		bit = ((lfsr >> 0) ^ (lfsr >> 1) ^ (lfsr >> 21) ^ (lfsr >> 22)) & 1
+
+		lfsr = (lfsr >> 1) | (bit << 55)
+
+		if lfsr == start_state {
+			break
+		}
+
+		period++
+	}
+	return period
+	//fmt.Print("\nPeriod: ", period)
+}
+
+// 48 bit LFSR
+func lfsr48() uint64 {
+	var start_state uint64
+	var lfsr uint64
+	var bit uint64
+
+	start_state = 0xACE1
+	lfsr = start_state
+
+	var period uint64 = 0
+
+	/* taps: 32,22,2,1 + 11*/
+	for {
+		//	fmt.Print(lfsr & 1)
+
+		//           48,           47,           21,            20      + 1
+		bit = ((lfsr >> 0) ^ (lfsr >> 1) ^ (lfsr >> 27) ^ (lfsr >> 28)) & 1
+
+		lfsr = (lfsr >> 1) | (bit << 47)
+
+		if lfsr == start_state {
+			break
+		}
+
+		period++
+	}
+	return period
+	//fmt.Print("\nPeriod: ", period)
+}
+
+// 40 bit LFSR
+func lfsr40() uint64 {
+	var start_state uint64
+	var lfsr uint64
+	var bit uint64
+
+	start_state = 0xACE1
+	lfsr = start_state
+
+	var period uint64 = 0
+
+	/* taps: 32,22,2,1 + 11*/
+	for {
+		//	fmt.Print(lfsr & 1)
+
+		//           40,           38,            21,            19      + 1
+		bit = ((lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 19) ^ (lfsr >> 21)) & 1
+
+		lfsr = (lfsr >> 1) | (bit << 39)
+
+		if lfsr == start_state {
+			break
+		}
+
+		period++
+	}
+	return period
+	//fmt.Print("\nPeriod: ", period)
+}
+
+// 32 bit LFSR
 func lfsr32() uint64 {
 	var start_state uint32
 	var lfsr uint32
@@ -110,6 +215,7 @@ func lfsr32() uint64 {
 	/* taps: 32,22,2,1 + 11*/
 	for {
 		//	fmt.Print(lfsr & 1)
+
 		//         32             22             2             1         + 1
 		bit = ((lfsr >> 0) ^ (lfsr >> 10) ^ (lfsr >> 30) ^ (lfsr >> 31)) & 1
 
@@ -125,6 +231,7 @@ func lfsr32() uint64 {
 	//fmt.Print("\nPeriod: ", period)
 }
 
+// 24 bit LFSR
 func lfsr24() uint {
 	var start_state uint32
 	var lfsr uint32
@@ -153,6 +260,7 @@ func lfsr24() uint {
 	//fmt.Print("\nPeriod: ", period)
 }
 
+// 16 bit LFSR
 func lfsr16() int {
 	var start_state uint16
 	var lfsr uint16
@@ -181,6 +289,7 @@ func lfsr16() int {
 	//fmt.Print("\nPeriod: ", period)
 }
 
+// 8 bit LFSR
 func lfsr8() int {
 	var start_state uint8
 	var lfsr uint8
@@ -208,6 +317,8 @@ func lfsr8() int {
 	return period
 	//fmt.Print("\nPeriod: ", period)
 }
+
+// 4 bit LFSR
 func lfsr4() int {
 	var start_state uint8
 	var lfsr uint8
